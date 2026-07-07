@@ -1,0 +1,6 @@
+@BreakfastServer_HostAddress = http://localhost:5094
+
+GET {{BreakfastServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
