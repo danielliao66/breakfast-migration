@@ -1,0 +1,18 @@
+<div class="checkout">
+  <h1>Menu</h1>
+  <img src="food_bag.jpg" alt="Checkout">
+</div>
+<div class="menu-grid">
+  <div class="menu-card" *ngFor="let item of menuItems">
+    <div class="card-image">
+      <img [src]="item.imgUrl" [alt]="item.name" referrerpolicy="no-referrer">
+    </div>
+    <div class="card-content">
+      <h3>{{ item.name }}</h3>
+      <div>
+        <span>${{ item.price / 100 }}</span>
+        <button class="add-btn">Add to Order</button>
+      </div>
+    </div>
+  </div>
+</div>

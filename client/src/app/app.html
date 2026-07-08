@@ -1,0 +1,7 @@
+@if (state == "start") {
+  <start (changeState)="changeToMenu()" />
+} @else if (state == "menu") {
+  <app-menu [menuItems]="menuItems" (changeState)="changeToCheckout()"/>
+} @else if (state == "checkout") {
+  <checkout />
+}
