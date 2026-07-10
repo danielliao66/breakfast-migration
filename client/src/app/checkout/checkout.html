@@ -1,1 +1,18 @@
-<p>checkout works!</p>
+<ul>
+  @for (item of orderedItems; track item.id) {
+    <li class="list-item">
+      <span>{{ item.name }}</span>
+      <p>${{ (item.price/100).toFixed(2) }}</p>
+      <button (click)="handleRemove($index)">-</button>
+      <div>{{ item.quantity }}</div>
+      <button (click)="handleAdd($index)">+</button>
+    </li>
+  }
+  @if (orderedItems.length > 0) {
+    <li class="list-item summary">
+      <span><strong>Total</strong></span>
+      <p><strong>${{ (total/100).toFixed(2) }}</strong></p>
+      <button (click)="handleCheckout()">checkout</button>
+    </li>
+  }
+</ul>

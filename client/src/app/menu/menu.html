@@ -1,9 +1,12 @@
 <div class="checkout">
   <h1>Menu</h1>
-  <img src="food_bag.jpg" alt="Checkout">
+  @if (length > 0) {
+    <span>{{ length }}</span>
+  }
+  <img src="food_bag.jpg" alt="Checkout" (click)="handleCheckout()">
 </div>
 <div class="menu-grid">
-  <div class="menu-card" *ngFor="let item of menuItems">
+  <div class="menu-card" *ngFor="let item of menuItems; let i = index">
     <div class="card-image">
       <img [src]="item.imgUrl" [alt]="item.name" referrerpolicy="no-referrer">
     </div>
@@ -11,7 +14,7 @@
       <h3>{{ item.name }}</h3>
       <div>
         <span>${{ item.price / 100 }}</span>
-        <button class="add-btn">Add to Order</button>
+        <button class="add-btn" (click)="handleAdd(i)">Add to Order</button>
       </div>
     </div>
   </div>

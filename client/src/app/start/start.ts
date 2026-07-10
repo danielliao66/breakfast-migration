@@ -1,4 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'start',
@@ -7,9 +9,21 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrl: './start.css',
 })
 export class Start {
-  @Output() changeState = new EventEmitter<void>();
-  
+  http = inject(HttpClient);
+  apiUrl = "http://localhost:5094";
+  router = inject(Router);
+
+  ngOnInit() {
+    this.http.get(`${this.apiUrl}/menu`).subscribe({
+      next: (data) => {
+        localStorage.setItem('menuItems', JSON.stringify(data));
+      },
+      error: (err) => {
+        console.error('API request failed:', err);
+      }
+    });
+  }
   handleStart() {
-    this.changeState.emit();
+    this.router.navigate(["menu"]);
   }
 }

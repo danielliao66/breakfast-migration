@@ -1,40 +1,24 @@
-import { Component, inject, signal } from '@angular/core';
-import { Start } from './start/start';
-import { Menu } from './menu/menu';
-import { HttpClient } from '@angular/common/http';
+import { Component, signal } from '@angular/core';
+import { RouteReuseStrategy, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [Start, Menu],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  providers: [
+    {
+      provide: RouteReuseStrategy,
+      useValue: {
+        shouldDetach: () => false,
+        store: () => null,
+        retrieve: () => null,
+        shouldAttach: () => false,
+        shouldReuseRoute: () => false
+      }
+    }
+  ]
 })
 export class App {
   protected readonly title = signal('client');
-
-  state = "start";
-  http = inject(HttpClient);
-  apiUrl = "http://localhost:5094";
-  menuItems: any;
-
-  changeToMenu() {
-    this.state = "menu";
-  }
-  changeToCheckout() {
-    this.state = "checkout";
-  }
-  changeToStart() {
-    this.state = "start";
-  }
-  ngOnInit() {
-    this.http.get(`${this.apiUrl}/menu`).subscribe({
-      next: (data) => {
-        this.menuItems = data;
-        console.log(this.menuItems)
-      },
-      error: (err) => {
-        console.error('API request failed:', err);
-      }
-    });
-  }
 }

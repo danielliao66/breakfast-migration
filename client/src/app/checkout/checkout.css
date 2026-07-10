@@ -1,0 +1,59 @@
+ul {
+  list-style-type: none;
+  padding: 80px 400px;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+}
+
+.list-item {
+  display: flex;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s;
+}
+
+.list-item:hover {
+  background-color: #f9f9f9;
+}
+
+.list-item p {
+  margin: 0;
+  color: #666;
+  font-size: 20px;
+  flex: 3;
+}
+
+button {
+  margin: 0;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 15px;
+  flex: 1;
+  flex-grow: 0;
+}
+
+.list-item span {
+  flex: 9;
+}
+
+.list-item div {
+  flex: 1;
+  text-align: center;
+}
+.summary button {
+  flex: 2;
+}
+
+button:hover {
+  background-color: #e1e1e2;
+}
+
+button:active {
+  background-color: buttonface;
+}
+
+h1 {
+  text-align: center;
+}

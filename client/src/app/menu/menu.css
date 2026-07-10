@@ -8,6 +8,12 @@ h1 {
     height: 50px;
 }
 
+.checkout span {
+  position: absolute;
+  top: 1%;
+  left: 95%;
+}
+
 .checkout img:hover {
     opacity: 0.6;
 }
@@ -35,9 +41,11 @@ h1 {
   flex-direction: column;
 }
 
+/*
 .menu-card:hover {
   transform: translateY(-5px);
 }
+*/
 
 .card-image {
   position: relative;

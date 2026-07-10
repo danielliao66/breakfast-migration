@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using BreakfastServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration["MongoDB"];
 var databaseName = "orderDatabase";
 
-// Register MongoClient and IMongoDatabase
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(connectionString));
+builder.Services.AddSingleton<INumGenerator, NumGenerator>();
 builder.Services.AddScoped<IMongoDatabase>(sp => 
     sp.GetRequiredService<IMongoClient>().GetDatabase(databaseName));
 

@@ -1,0 +1,10 @@
+<div>
+    <h2>
+        Order number: {{ orderNumber() }}
+        <br>
+        Total: ${{ (total/100).toFixed(2) }}
+        <br>
+        Please insert or tap your card
+    </h2>
+</div>
+<button (click)="handlePay()">Pay</button>

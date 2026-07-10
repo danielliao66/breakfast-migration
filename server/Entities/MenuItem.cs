@@ -8,9 +8,9 @@ public class MenuItem {
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
     [BsonElement("name")]
-    public string Name { get; set; } = null!;
+    public string Name { get; set; }
     [BsonElement("price")]
-    public decimal Price { get; set; }
+    public int Price { get; set; }
     [BsonElement("img_url")]
     public string ImgUrl { get; set; }
 }
