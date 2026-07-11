@@ -1,0 +1,24 @@
+@if (signalrService.order() !=== "taken") {
+  <div class="status">  
+    <ul>
+      <li class="list-item summary">
+        <span><strong>Preparing</strong></span>
+      </li>
+      @for (item of ordersPreparing(); track item.number) {
+        <li class="list-item">
+          <span>{{ item.number }}</span>
+        </li>
+      }
+    </ul>
+    <ul>
+      <li class="list-item summary">
+        <span><strong>Ready</strong></span>
+      </li>
+      @for (item of ordersReady(); track item.number) {
+        <li class="list-item taken" (click)="handleTaken($index)">
+          <span>{{ item.number }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+}

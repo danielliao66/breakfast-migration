@@ -9,7 +9,7 @@ public class Order {
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
     [BsonElement("items")]
-    public List<OrderedItem> Items { get; set; }
+    public List<OrderedItem>? Items { get; set; }
     [BsonElement("status")]
     public string Status { get; set; } = "preparing";
     [BsonElement("number")]

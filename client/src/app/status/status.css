@@ -1,0 +1,30 @@
+.status {
+    display: flex;
+    padding: 50px 300px;
+}
+
+ul {
+  list-style-type: none;
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  flex: 1;
+}
+
+.list-item {
+  display: flex;
+  padding: 12px;
+  transition: background-color 0.2s;
+}
+
+summary{
+  border-bottom: 1px solid #ddd;
+}
+
+.taken:hover {
+  background-color: #f9f9f9;
+}
+
+.list-item span {
+  flex: 1;
+}

@@ -8,12 +8,14 @@ var connectionString = builder.Configuration["MongoDB"];
 var databaseName = "orderDatabase";
 
 builder.Services.AddSingleton<IMongoClient>(new MongoClient(connectionString));
-builder.Services.AddSingleton<INumGenerator, NumGenerator>();
-builder.Services.AddScoped<IMongoDatabase>(sp => 
+builder.Services.AddSingleton<NumGenerator>();
+builder.Services.AddSingleton<StatusService>();
+builder.Services.AddScoped(sp => 
     sp.GetRequiredService<IMongoClient>().GetDatabase(databaseName));
 
 var clientUrl = "http://localhost:4200";
 
+builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "client",
@@ -21,7 +23,8 @@ builder.Services.AddCors(options =>
                       {
                           policy.WithOrigins(clientUrl)
                                 .AllowAnyHeader()
-                                .AllowAnyMethod();
+                                .AllowAnyMethod()
+                                .AllowCredentials();
                       });
 });
 
@@ -30,6 +33,8 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 app.UseCors("client");
+
+app.MapHub<StatusHub>("/statusHub");
 
 app.MapControllers();
 

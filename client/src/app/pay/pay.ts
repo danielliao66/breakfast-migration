@@ -38,7 +38,6 @@ export class Pay {
         },
         error: (err) => {
           console.error('API request failed:', err);
-          this.ngOnInit();
         }
       });
     }
@@ -50,7 +49,7 @@ export class Pay {
   handlePay() {
     this.http.post(`${this.apiUrl}/orders`, { items: this.orderedItems, number: this.orderNumber() }).subscribe({
       next: (response) => {
-        console.error('API request succeeded:', response);
+        console.log('API request succeeded:', response);
       },
       error: (err) => {
         console.error('API request failed:', err);
