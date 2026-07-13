@@ -1,0 +1,22 @@
+<div class="status">  
+  <ul>
+    <li class="list-item summary">
+      <span><strong>Preparing</strong></span>
+    </li>
+    @for (order of ordersPreparing(); track order.id) {
+      <li class="list-item">
+        <span>{{ order.number }}</span>
+      </li>
+    }
+  </ul>
+  <ul>
+    <li class="list-item summary">
+      <span><strong>Ready</strong></span>
+    </li>
+    @for (order of ordersReady(); track order.id) {
+      <li class="list-item taken" (click)="handleTaken($index)">
+        <span>{{ order.number }}</span>
+      </li>
+    }
+  </ul>
+</div>

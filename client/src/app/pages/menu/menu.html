@@ -1,9 +1,10 @@
 <div class="checkout">
   <h1>Menu</h1>
-  @if (length > 0) {
+  @let enabled = length > 0;
+  @if (enabled) {
     <span>{{ length }}</span>
   }
-  <img src="food_bag.jpg" alt="Checkout" (click)="handleCheckout()">
+  <img src="food_bag.jpg" alt="Checkout" (click)="handleCheckout()" [class.disabled]="!enabled">
 </div>
 <div class="menu-grid">
   <div class="menu-card" *ngFor="let item of menuItems; let i = index">

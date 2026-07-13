@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MenuItem, OrderedItem } from '../../entities/entities';
 
 @Component({
   selector: 'app-menu',
@@ -9,10 +10,10 @@ import { Router } from '@angular/router';
   styleUrl: './menu.css',
 })
 export class Menu {
-  menuItems: any;
-  orderedItems: any;
-  length: any;
-  indexMap: any
+  menuItems: MenuItem[] = [];
+  orderedItems: OrderedItem[] = [];
+  length: OrderedItem["quantity"] = 0;
+  indexMap: Record<number, number> = {}
 
   router = inject(Router);
   
@@ -32,27 +33,20 @@ export class Menu {
     if (cacheOrder) {
       this.orderedItems = JSON.parse(cacheOrder);
     }
-    else {
-      this.orderedItems = [];
-    }
 
     if (cacheIndex) {
       this.indexMap = JSON.parse(cacheIndex);
     }
-    else {
-      this.indexMap = {};
-    }
 
     this.length = this.orderedItems.reduce(
-      (accumulator: any, current: any) => accumulator+current.quantity, 0
+      (accumulator: OrderedItem["quantity"], current: OrderedItem) => accumulator+current.quantity, 0
     );
   }
   handleAdd(index: number) {
     if (!Object.hasOwn(this.indexMap, index)) {
       this.indexMap[index] = this.orderedItems.length;
       localStorage.setItem("indexMap", JSON.stringify(this.indexMap));
-      let { imgUrl: _imgUrl, ...orderedItem } = this.menuItems[index];
-      orderedItem.quantity = 0;
+      const { img_url: _imgUrl, ...orderedItem } = { ...this.menuItems[index], quantity: 0 };
       this.orderedItems.push(orderedItem);
     }
     this.orderedItems[this.indexMap[index]].quantity += 1;

@@ -46,6 +46,10 @@ button {
   flex: 2;
 }
 
+.summary {
+  margin-bottom: 10px;
+}
+
 button:hover {
   background-color: #e1e1e2;
 }
@@ -56,4 +60,12 @@ button:active {
 
 h1 {
   text-align: center;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input {
+  margin-right: 5px;
 }

@@ -15,4 +15,6 @@ public class Order {
     [BsonElement("number")]
     [JsonPropertyName("number")]
     public int OrderNumber { get; set; }
+    [JsonPropertyName("option")]
+    public string? Option {get; set;}
 }

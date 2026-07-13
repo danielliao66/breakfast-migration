@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { environment } from '../../environments/environment';
 import * as signalR from '@microsoft/signalr';
 
 @Injectable({
@@ -8,7 +9,8 @@ import * as signalR from '@microsoft/signalr';
 export class SignalrService {
   private hubConnection!: signalR.HubConnection;
   private apiUrl = environment.apiUrl;
-  public order = signal<any>({});
+  public updateForCustomer = signal<any>(null);
+  public updateForKitchen = signal<any>(null);
 
   constructor() {
     this.startConnection();
@@ -17,7 +19,7 @@ export class SignalrService {
 
   private startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.apiUrl, {
+      .withUrl(`${this.apiUrl}/statusHub`, {
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
       })
@@ -32,10 +34,10 @@ export class SignalrService {
 
   private addStatusListener = () => {
     this.hubConnection.on('UpdateForCustomer', (order: any) => {
-      this.order.set(order);
+      this.updateForCustomer.set(order);
     });
     this.hubConnection.on('UpdateForKitchen', (order: any) => {
-      this.order.set(order);
+      this.updateForKitchen.set(order);
     });
   }
   
@@ -49,43 +51,5 @@ export class SignalrService {
 
   public stopConnection() {
     this.hubConnection.stop();
-  }
-}
-
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SignalrService } from './services/signalr.service';
-import { environment } from '../../environments/environment';
-
-@Component({
-  selector: 'app-chat',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  template: `
-    <div style="padding: 20px;">
-      <h3>Real-Time Broadcast Room</h3>
-      
-      <div *ngFor="let msg of signalrService.messages()">
-        <strong>{{ msg.user }}:</strong> {{ msg.message }}
-      </div>
-
-      <input [(ngModel)]="username" placeholder="Name" />
-      <input [(ngModel)]="messageText" placeholder="Message" />
-      <button (click)="send()">Send Message</button>
-    </div>
-  `
-})
-export class ChatComponent {
-  public signalrService = inject(SignalrService);
-  
-  username = '';
-  messageText = '';
-
-  send() {
-    if (this.username && this.messageText) {
-      this.signalrService.sendMessage(this.username, this.messageText);
-      this.messageText = '';
-    }
   }
 }

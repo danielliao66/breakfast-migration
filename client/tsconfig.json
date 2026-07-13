@@ -11,7 +11,8 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "ES2022",
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
     "module": "preserve"
   },
   "angularCompilerOptions": {

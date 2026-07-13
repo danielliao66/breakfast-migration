@@ -32,6 +32,8 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseRouting();
+
 app.UseCors("client");
 
 app.MapHub<StatusHub>("/statusHub");

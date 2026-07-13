@@ -1,0 +1,24 @@
+@if (orders().length) {
+  <ul>
+    @for (order of orders(); track order.id) {
+      @let orderId = order.id;
+      @let expanded = expandedMap[orderId];
+      <li class="list-item summary"  (click)="toggleExpand(orderId)">
+        <span><strong>{{ order.number }} ({{ orderId | slice:0:10 }}) {{ order.option }}</strong></span>
+        <button (click)="handleComplete($index)">complete</button>
+      </li>
+      @for (item of order.items; track item.id) {
+        @let itemId = item.id;
+        <li class="list-item" [style.display]="expanded ? null : 'none'">
+          <span></span>
+          <span>{{ item.name }}</span>
+          <span>{{ item.quantity }}</span>
+          <input type="checkbox" (change)="handleChecked(orderId, itemId)"
+            [checked]="checkedMap[orderId] && checkedMap[orderId][itemId]">
+        </li>
+      }
+    }
+  </ul>
+} @else {
+  <h1>Empty</h1>
+}

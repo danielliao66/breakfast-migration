@@ -1,19 +1,20 @@
 import { Component, inject,  } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { OrderedItem, Order } from '../../entities/entities';
 
 @Component({
   selector: 'checkout',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
 export class Checkout {
   
-  orderedItems: any;
-
+  orderedItems: OrderedItem[] = [];
   router = inject(Router);
-
-  total: any;
+  total: OrderedItem["price"] = 0;
+  option: Order["option"] = "";
   
   ngOnInit() {
     const cacheOrder = localStorage.getItem('orderedItems');
@@ -26,8 +27,14 @@ export class Checkout {
     }
 
     this.total = this.orderedItems.reduce(
-      (accumulator: any, current: any) => accumulator+current.price*current.quantity, 0
+      (accumulator: OrderedItem["price"], current: OrderedItem) => accumulator+current.price*current.quantity, 0
     );
+
+    const cacheOption = localStorage.getItem('option');
+
+    if (cacheOption) {
+      this.option = JSON.parse(cacheOption);
+    }
   }
   handleAdd(index: number) {
     this.orderedItems[index].quantity += 1;
@@ -45,5 +52,8 @@ export class Checkout {
     if (this.total > 0) {
       this.router.navigate(["pay"]);
     }
+  }
+  handleOption() {
+    localStorage.setItem("option", JSON.stringify(this.option));
   }
 }

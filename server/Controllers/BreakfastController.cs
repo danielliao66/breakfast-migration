@@ -35,8 +35,8 @@ public class BreakfastController : ControllerBase
         return Ok(_numGenerator.GetNext());
     }
 
-    [HttpGet("orders")]
-    public async Task<IActionResult> GetActiveOrders()
+    [HttpGet("orders-customer")]
+    public async Task<IActionResult> GetOrdersCustomer()
     {   
         var orders = (await _orderCollection
             .Find(order => order.Status != "taken")
@@ -45,10 +45,25 @@ public class BreakfastController : ControllerBase
         return Ok(orders);
     }
 
+    [HttpGet("orders-kitchen")]
+    public async Task<IActionResult> GetOrdersKitchen()
+    {   
+        var orders = await _orderCollection
+            .Find(order => order.Status == "preparing")
+            .ToListAsync();
+        return Ok(orders);
+    }
+
     [HttpPost("orders")]
     public async Task<IActionResult> CreateOrder([FromBody] Order order)
     {   
         await _orderCollection.InsertOneAsync(order);
+        await _statusService.UpdateForCustomer(new Order {
+            Id = order.Id,
+            Status = order.Status,
+            OrderNumber = order.OrderNumber
+        });
+        await _statusService.UpdateForKitchen(order);
         return Ok(new { Message = "new order created" });
     }
 

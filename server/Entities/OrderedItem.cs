@@ -10,7 +10,7 @@ public class OrderedItem {
     [JsonPropertyName("id")]
     public string? ItemId { get; set; }
     [BsonElement("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     [BsonElement("price")]
     public int Price { get; set; }
     [BsonElement("quantity")]

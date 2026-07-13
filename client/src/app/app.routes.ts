@@ -1,10 +1,11 @@
 import { Routes } from "@angular/router";
-import { Start } from "./start/start";
-import { Menu } from "./menu/menu";
-import { Checkout } from "./checkout/checkout";
-import { Pay } from "./pay/pay";
-import { Done } from "./done/done";
-import { Status } from "./status/status";
+import { Start } from "./pages/start/start";
+import { Menu } from "./pages/menu/menu";
+import { Checkout } from "./pages/checkout/checkout";
+import { Pay } from "./pages/pay/pay";
+import { Done } from "./pages/done/done";
+import { Status } from "./pages/status/status";
+import { Kitchen } from "./pages/kitchen/kitchen";
 
 export const routes: Routes = [
   { path: '', component: Start },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'pay', component: Pay },
   { path: 'done', component: Done },
   { path: 'status', component: Status },
-  { path: '**', component: Start } 
+  { path: 'kitchen', component: Kitchen },
+  { path: '**', component: Start }
 ];

@@ -1,8 +1,6 @@
-using System.Threading;
-
 namespace BreakfastServer.Services;
 
-public class NumGenerator : INumGenerator
+public class NumGenerator
 {
     private int _currentNum = 0;
 

@@ -11,9 +11,6 @@ export class Done {
   router = inject(Router);
 
   handleDone() {
-    localStorage.removeItem("orderedItems");
-    localStorage.removeItem("indexMap");
-    localStorage.removeItem("orderNumber");
     this.router.navigate([""]);
   }
 }
