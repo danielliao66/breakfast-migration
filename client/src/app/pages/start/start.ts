@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { OrderService } from '../../services/orderService';
+import { MenuItem } from '../../entities/entities';
 
 @Component({
   selector: 'start',
@@ -9,17 +10,16 @@ import { Router } from '@angular/router';
   styleUrl: './start.css',
 })
 export class Start {
-  http = inject(HttpClient);
-  apiUrl = "http://localhost:5094";
-  router = inject(Router);
+  private orderService = inject(OrderService);
+  private router = inject(Router);
 
   ngOnInit() {
-    this.http.get(`${this.apiUrl}/menu`).subscribe({
-      next: (data) => {
-        localStorage.setItem('menuItems', JSON.stringify(data));
+    this.orderService.getMenu().subscribe({
+      next: (menu: MenuItem[]) => {
+        localStorage.setItem('menuItems', JSON.stringify(menu));
       },
       error: (err) => {
-        console.error('API request failed:', err);
+        console.error('get menu request failed:', err);
       }
     });
   }

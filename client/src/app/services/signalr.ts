@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import * as signalR from '@microsoft/signalr';
+import { Order } from '../entities/entities';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,8 @@ import * as signalR from '@microsoft/signalr';
 export class SignalrService {
   private hubConnection!: signalR.HubConnection;
   private apiUrl = environment.apiUrl;
-  public updateForCustomer = signal<any>(null);
-  public updateForKitchen = signal<any>(null);
+  public updateForCustomer = signal<Order | null>(null);
+  public updateForKitchen = signal<Order | null>(null);
 
   constructor() {
     this.startConnection();
@@ -33,15 +34,15 @@ export class SignalrService {
   }
 
   private addStatusListener = () => {
-    this.hubConnection.on('UpdateForCustomer', (order: any) => {
+    this.hubConnection.on('UpdateForCustomer', (order: Order) => {
       this.updateForCustomer.set(order);
     });
-    this.hubConnection.on('UpdateForKitchen', (order: any) => {
+    this.hubConnection.on('UpdateForKitchen', (order: Order) => {
       this.updateForKitchen.set(order);
     });
   }
   
-  public async UpdateForCustomer(order: any) {
+  public async UpdateForCustomer(order: Order) {
     try {
       await this.hubConnection.invoke('UpdateForCustomer', order);
     } catch (err) {

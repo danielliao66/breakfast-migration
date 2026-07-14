@@ -10,11 +10,10 @@ import { OrderedItem, Order } from '../../entities/entities';
   styleUrl: './checkout.css',
 })
 export class Checkout {
-  
-  orderedItems: OrderedItem[] = [];
-  router = inject(Router);
-  total: OrderedItem["price"] = 0;
-  option: Order["option"] = "";
+  orderedItems!: OrderedItem[];
+  private router = inject(Router);
+  total!: OrderedItem["price"];
+  option!: Order["option"];
   
   ngOnInit() {
     const cacheOrder = localStorage.getItem('orderedItems');

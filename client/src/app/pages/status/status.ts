@@ -1,7 +1,7 @@
 import { Component, effect, inject, linkedSignal, signal, untracked } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { SignalrService } from '../../services/signalr';
+import { OrderService } from '../../services/orderService';
+import { Order } from '../../entities/entities';
 
 @Component({
   selector: 'status',
@@ -10,22 +10,21 @@ import { SignalrService } from '../../services/signalr';
   styleUrl: './status.css',
 })
 export class Status {
-  http = inject(HttpClient);
-  apiUrl = environment.apiUrl;
-  signalrService = inject(SignalrService);
-  ordersPreparingInitial = signal<any[]>([]);
-  ordersReadyInitial = signal<any>([]);
-  ordersPreparingUpdates = signal<any[]>([]);
-  ordersReadyUpdates = signal<any>([]);
+  private orderService = inject(OrderService);
+  private signalrService = inject(SignalrService);
+  private ordersPreparingInitial = signal<Order[] | null>(null);
+  private ordersReadyInitial = signal<Order[] | null>(null);
+  private ordersPreparingUpdates = signal<Order[]>([]);
+  private ordersReadyUpdates = signal<Order[]>([]);
   ordersPreparing = linkedSignal({
     source: this.ordersPreparingInitial,
-    computation: (orders) => [...orders]
+    computation: (orders) => [...orders!]
   });
   ordersReady = linkedSignal({
     source: this.ordersReadyInitial,
-    computation: (orders) => [...orders]
+    computation: (orders) => [...orders!]
   });
-  initialized = false;
+  private initialized = false;
 
   constructor() {
     effect(() => {
@@ -46,7 +45,7 @@ export class Status {
         }
         if (ordersReadyUpdates.length) {
           const ordersReadyUpdatesFiltered = ordersReadyUpdates
-            .filter((updatedOrder: any) => !ordersReady.some(order => order.id === updatedOrder.id));
+            .filter((updatedOrder: Order) => !ordersReady.some(order => order.id === updatedOrder.id));
           this.ordersReady.set([...ordersReady, ...ordersReadyUpdatesFiltered]);
           this.ordersReadyUpdates.set([]);
         }
@@ -78,28 +77,28 @@ export class Status {
     });
   }
   ngOnInit() {
-    this.http.get(`${this.apiUrl}/orders-customer`).subscribe({
-      next: (data: any) => {
-        this.filterOrders(data);
+    this.orderService.getOrdersCustomer().subscribe({
+      next: (orders: Order[]) => {
+        this.filterOrders(orders);
         this.initialized = true;
       },
       error: (err) => {
-        console.error('API request failed:', err);
+        console.error('get orders request failed:', err);
       }
     });    
   }
-  filterOrders(orders: any) {
-    this.ordersPreparingInitial.set(orders.filter((order: any) => order.status === "preparing"));
-    this.ordersReadyInitial.set(orders.filter((order: any) => order.status === "ready"));
+  filterOrders(orders: Order[]) {
+    this.ordersPreparingInitial.set(orders.filter((order: Order) => order.status === "preparing"));
+    this.ordersReadyInitial.set(orders.filter((order: Order) => order.status === "ready"));
   }
-  handleTaken(index: any) {
+  handleTaken(index: number) {
     const updatedOrder = {...this.ordersReady()[index], status: "taken"};
-    this.http.put(`${this.apiUrl}/orders`, updatedOrder).subscribe({
+    this.orderService.updateOrder(updatedOrder).subscribe({
       next: (response) => {
-        console.log('API request succeeded:', response);
+        console.log('update order request succeeded:', response);
       },
       error: (err) => {
-        console.error('API request failed:', err);
+        console.error('update order request failed:', err);
       }
     });
     this.ordersReady.set(this.ordersReady().toSpliced(index, 1));

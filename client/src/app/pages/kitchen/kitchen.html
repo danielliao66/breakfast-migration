@@ -1,7 +1,7 @@
 @if (orders().length) {
   <ul>
     @for (order of orders(); track order.id) {
-      @let orderId = order.id;
+      @let orderId = order.id!;
       @let expanded = expandedMap[orderId];
       <li class="list-item summary"  (click)="toggleExpand(orderId)">
         <span><strong>{{ order.number }} ({{ orderId | slice:0:10 }}) {{ order.option }}</strong></span>

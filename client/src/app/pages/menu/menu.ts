@@ -10,12 +10,11 @@ import { MenuItem, OrderedItem } from '../../entities/entities';
   styleUrl: './menu.css',
 })
 export class Menu {
-  menuItems: MenuItem[] = [];
-  orderedItems: OrderedItem[] = [];
-  length: OrderedItem["quantity"] = 0;
-  indexMap: Record<number, number> = {}
-
-  router = inject(Router);
+  menuItems!: MenuItem[];
+  private orderedItems!: OrderedItem[];
+  length!: OrderedItem["quantity"];
+  private indexMap!: Record<number, number>;
+  private router = inject(Router);
   
   ngOnInit() {
     const cacheMenu = localStorage.getItem('menuItems');
@@ -33,9 +32,15 @@ export class Menu {
     if (cacheOrder) {
       this.orderedItems = JSON.parse(cacheOrder);
     }
+    else {
+      this.orderedItems = [];
+    }
 
     if (cacheIndex) {
       this.indexMap = JSON.parse(cacheIndex);
+    }
+    else {
+      this.indexMap = {};
     }
 
     this.length = this.orderedItems.reduce(

@@ -6,7 +6,6 @@ ul {
 }
 
 .list-item {
-  display: flex;
   padding: 12px;
   border-bottom: 1px solid #ddd;
   transition: background-color 0.2s;
@@ -16,16 +15,17 @@ input {
     text-align: left;
     width: 16px;
     height: 16px;
-    margin-left: 200px;
+    float: right;
+    margin-right: 150px;
 }
 
 button {
-  margin-left: 180px;
   border: none;
   padding: 5px 10px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 15px;
+  float: right;
 }
 
 span {

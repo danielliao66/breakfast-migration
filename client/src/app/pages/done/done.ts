@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrl: './done.css',
 })
 export class Done {
-  router = inject(Router);
+  private router = inject(Router);
 
   handleDone() {
     this.router.navigate([""]);

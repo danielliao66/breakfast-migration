@@ -13,9 +13,9 @@ export interface OrderedItem {
 }
 
 export interface Order {
-  id: string | undefined,
-  items: OrderedItem[] | undefined | null,
-  status: string | undefined,
+  id?: string,
+  items?: OrderedItem[],
+  status?: string,
   number: number,
   option: string
 }

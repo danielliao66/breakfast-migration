@@ -14,15 +14,15 @@ import { OrderService } from '../../services/orderService';
 export class Kitchen {
   private orderService = inject(OrderService);
   private signalrService = inject(SignalrService);
-  private ordersInitial = signal<Order[]>([]);
+  private ordersInitial = signal<Order[] | null>(null);
   private ordersUpdates = signal<Order[]>([]);
-  private orders = linkedSignal({
+  orders = linkedSignal({
     source: this.ordersInitial,
-    computation: (orders) => [...orders]
+    computation: (orders) => [...orders!]
   });
   private initialized = false;
-  private expandedMap: Record<Order["id"], boolean> = {};
-  private checkedMap: Record<Order["id"], Record<Order["id"], boolean>> = {};
+  expandedMap: Record<NonNullable<Order["id"]>, boolean> = {};
+  checkedMap: Record<NonNullable<Order["id"]>, Record<NonNullable<Order["id"]>, boolean>> = {};
 
   constructor() {
     effect(() => {
@@ -52,10 +52,10 @@ export class Kitchen {
   }
   ngOnInit() {
     this.orderService.getOrdersKitchen().subscribe({
-      next: (orders: any) => {
-        this.orders.set(orders);
+      next: (orders: Order[]) => {
+        this.ordersInitial.set(orders);
         for (const order of orders) {
-          this.expandedMap[order.id] = false;
+          this.expandedMap[order.id!] = false;
         }
         this.initialized = true;
       },
@@ -70,7 +70,7 @@ export class Kitchen {
       this.checkedMap = JSON.parse(cacheChecked);
     }
   }
-  toggleExpand(orderId: Order["id"]) {
+  toggleExpand(orderId: NonNullable<Order["id"]>) {
     this.expandedMap[orderId] = !this.expandedMap[orderId];
   }
   handleComplete(index: number) {
@@ -86,13 +86,13 @@ export class Kitchen {
     });
     delete updatedOrder.items;
     this.signalrService.UpdateForCustomer(updatedOrder);
-    delete this.checkedMap[updatedOrder.id];
+    delete this.checkedMap[updatedOrder.id!];
     if (orders.length == 1) {
       localStorage.removeItem("checkedMap");
     }
     this.orders.set(this.orders().toSpliced(index, 1));
   }
-  handleChecked(orderId: Order["id"], itemId: MenuItem["id"]) {
+  handleChecked(orderId: NonNullable<Order["id"]>, itemId: MenuItem["id"]) {
     if (this.checkedMap[orderId] && this.checkedMap[orderId][itemId]) {
       this.checkedMap[orderId][itemId] = false;
     }

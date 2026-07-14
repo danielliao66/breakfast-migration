@@ -10,12 +10,12 @@ import { OrderedItem, Order } from '../../entities/entities';
   styleUrl: './pay.css',
 })
 export class Pay {
-  orderService = inject(OrderService);
-  router = inject(Router);
-  orderedItems: OrderedItem[] = [];
-  total: OrderedItem["price"] = 0;
-  orderNumber = signal(1);
-  option: Order["option"] = "";
+  private orderService = inject(OrderService);
+  private router = inject(Router);
+  private orderedItems!: OrderedItem[];
+  total!: OrderedItem["price"];
+  orderNumber = signal<Order["number"] | null>(null);
+  private option!: Order["option"];
 
   ngOnInit() {
     const cacheOrder = localStorage.getItem('orderedItems');
@@ -34,7 +34,7 @@ export class Pay {
     }
     else {
       this.orderService.getOrderNumber().subscribe({
-        next: (number: any) => {
+        next: (number: Order["number"]) => {
           localStorage.setItem('orderNumber', JSON.stringify(number));
           this.orderNumber.set(number);
         },
@@ -53,13 +53,13 @@ export class Pay {
     );
   }
   handlePay() {
-    const order = { items: this.orderedItems, number: this.orderNumber(), option: this.option };
+    const order = { items: this.orderedItems, number: this.orderNumber()!, option: this.option ?? "take-out" };
     this.orderService.createOrder(order).subscribe({
       next: (response) => {
-        console.log('API request succeeded:', response);
+        console.log('create order request succeeded:', response);
       },
       error: (err) => {
-        console.error('API request failed:', err);
+        console.error('create order request failed:', err);
       }
     });
     localStorage.removeItem("orderedItems");
