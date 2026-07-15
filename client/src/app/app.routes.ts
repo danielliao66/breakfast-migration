@@ -8,12 +8,12 @@ import { Status } from "./pages/status/status";
 import { Kitchen } from "./pages/kitchen/kitchen";
 
 export const routes: Routes = [
-  { path: '', component: Start },
-  { path: 'menu', component: Menu },
-  { path: 'checkout', component: Checkout },
-  { path: 'pay', component: Pay },
-  { path: 'done', component: Done },
-  { path: 'status', component: Status },
-  { path: 'kitchen', component: Kitchen },
-  { path: '**', component: Start }
+  { path: '', component: Start, title: "Start" },
+  { path: 'menu', component: Menu, title: "Menu" },
+  { path: 'checkout', component: Checkout, title: "Checkout" },
+  { path: 'pay', component: Pay, title: "Pay" },
+  { path: 'done', component: Done, title: "Done" },
+  { path: 'status', component: Status, title: "Status" },
+  { path: 'kitchen', component: Kitchen, title: "Kitchen" },
+  { path: '**', component: Start, title: "Start" }
 ];
