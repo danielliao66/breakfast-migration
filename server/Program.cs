@@ -15,7 +15,7 @@ builder.Services.AddSingleton<StatusService>();
 builder.Services.AddScoped(sp => 
     sp.GetRequiredService<IMongoClient>().GetDatabase(databaseName));
 
-var clientUrl = "http://localhost:4200";
+var clientUrl = "https://breakfast-migration.vercel.app";
 
 builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
