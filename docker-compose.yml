@@ -1,0 +1,19 @@
+services:
+  backend-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5094:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MongoDB=${MongoDB}
+
+  frontend-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend-server
